@@ -1,0 +1,61 @@
+body {
+    background: #fdf6e3;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: #333;
+    text-align: center;
+    padding: 30px;
+    background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+}
+
+h1, h2 {
+    color: #ff6f61;
+    text-shadow: 1px 1px #ffcdb2;
+}
+
+a, button, input[type="submit"] {
+    background-color: #ffb703;
+    color: white;
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+a:hover, button:hover, input[type="submit"]:hover {
+    background-color: #fb8500;
+}
+
+input[type="file"] {
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px dashed #ffb703;
+    border-radius: 10px;
+    background-color: #fff3cd;
+}
+
+select {
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #ffe8d6;
+    border: 1px solid #ffb703;
+    font-size: 1em;
+}
+
+img {
+    border: 3px solid #ffb703;
+    border-radius: 15px;
+    max-width: 90%;
+    margin: 20px auto;
+    display: block;
+}
+
+.footer-link {
+    display: inline-block;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Book - Reader's Compass</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h2 {
+            font-size: 2em;
+            color: #ff6f61;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .scan-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .form-section p {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed #ffb703;
+            border-radius: 10px;
+            background-color: #fff3cd;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #ffe8d6;
+            border: 1px solid #ffb703;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #ffb703;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #fb8500;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h2>📖 Scan Your Book</h2>
+            <div class="description">
+                Discover the emotional journey of your book before you read it. 
+                Our analysis will show you how the story's mood evolves, 
+                what emotions to expect, and which characters will impact you the most.
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="scan-form">
+            <div class="form-section">
+                <label>📤 Upload a New Book</label>
+                <input type="file" name="book" accept=".txt">
+                <p>Upload a .txt file to analyze its emotional and thematic content</p>
+            </div>
+
+            <div class="form-section">
+                <label>📚 Or Choose from Your Library</label>
+                <select name="stored">
+                    <option value="">-- Select a book from your library --</option>
+                    {% for book in books %}
+                        <option value="{{ book.filename }}">{{ book.title }} ({{ book.genre }})</option>
+                    {% endfor %}
+                </select>
+                <p>Select a previously analyzed book to view its insights</p>
+            </div>
+
+            <button type="submit" class="submit-button">Start Analysis</button>
+        </form>
+
+        <a href="/" class="back-link">⬅️ Back to Home</a>
+    </div>
+</body>
+</html>

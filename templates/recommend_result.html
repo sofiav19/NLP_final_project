@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations - Reader's Compass</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h2 {
+            font-size: 2em;
+            color: #ff6f61;
+            margin-bottom: 15px;
+        }
+
+        .source-book {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .recommendation-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            color: #ff6f61;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .book-genre {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .similarity-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .similarity-info h4 {
+            color: #ff6f61;
+            margin-bottom: 10px;
+        }
+
+        .similarity-details {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .confidence-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #ffb703;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: #ffb703;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background: #fb8500;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h2>📚 Your Reading Recommendations</h2>
+            <div class="source-book">Based on your interest in: {{ filename.replace("_", " ") }}</div>
+        </div>
+
+        <div class="recommendations-grid">
+            {% for rec in recommendations[:3] %}
+                <div class="recommendation-card">
+                    <div class="book-title">{{ rec.title }}</div>
+                    <div class="book-genre">{{ rec.genre }}</div>
+                    <div class="similarity-info">
+                        <h4>Why this book?</h4>
+                        <div class="similarity-details">
+                            {% if rec.similarity_type == 'emotion' %}
+                                Shares similar emotional journey with strong {{ rec.dominant_emotion }} themes
+                            {% elif rec.similarity_type == 'theme' %}
+                                Explores similar themes of {{ rec.themes|join(', ') }}
+                            {% else %}
+                                Matches your reading profile with {{ rec.similarity_score }}% confidence
+                            {% endif %}
+                        </div>
+                        <div class="confidence-badge">
+                            {{ rec.confidence }}% Match
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a href="/" class="back-link">⬅️ Back to Home</a>
+    </div>
+</body>
+</html>

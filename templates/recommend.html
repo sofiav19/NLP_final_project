@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h2 {
+            font-size: 2em;
+            color: #ff6f61;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .recommend-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .form-section p {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .mode-description {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed #ffb703;
+            border-radius: 10px;
+            background-color: #fff3cd;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: #ffe8d6;
+            border: 1px solid #ffb703;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #ffb703;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #fb8500;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h2>🔍 Get Personalized Recommendations</h2>
+            <div class="description">
+                Find your next great read based on emotional resonance and thematic similarity.
+                Our recommendation system understands what makes you connect with a story
+                and suggests books that will resonate with your reading preferences.
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="recommend-form">
+            <div class="form-section">
+                <label>📤 Upload a Book You Love</label>
+                <input type="file" name="file" accept=".txt">
+                <p>Upload a book you enjoyed to find similar reads</p>
+            </div>
+
+            <div class="form-section">
+                <label>📚 Or Choose from Your Library</label>
+                <select name="stored">
+                    <option value="">-- Select a book from your library --</option>
+                    {% for book in books %}
+                        <option value="{{ book.filename }}">{{ book.title }} ({{ book.genre }})</option>
+                    {% endfor %}
+                </select>
+                <p>Select a book you've previously analyzed</p>
+            </div>
+
+            <div class="form-section">
+                <label>Select Recommendation Mode</label>
+                <select name="mode" id="mode">
+                    <option value="profile">📘 Similar Profile</option>
+                    <option value="emotion">❤️ Same Emotional Journey</option>
+                    <option value="cluster">🔗 Similar Emotional Cluster</option>
+                </select>
+                <div class="mode-description" id="mode-description">
+                    Find books with similar overall emotional and thematic profiles
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Get Recommendations</button>
+        </form>
+
+        <a href="/" class="back-link">⬅️ Back to Home</a>
+    </div>
+
+    <script>
+        // Update mode description based on selection
+        const modeSelect = document.getElementById('mode');
+        const modeDescription = document.getElementById('mode-description');
+        const descriptions = {
+            'profile': 'Find books with similar overall emotional and thematic profiles',
+            'emotion': 'Discover books that evoke the same dominant emotions',
+            'cluster': 'Get recommendations from books with similar emotional patterns'
+        };
+
+        modeSelect.addEventListener('change', function() {
+            modeDescription.textContent = descriptions[this.value];
+        });
+    </script>
+</body>
+</html>

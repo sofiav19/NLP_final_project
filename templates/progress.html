@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Processing Book...</title>
+    <style>
+        body {
+            background: #fdf6e3;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+        }
+
+        h2 {
+            color: #ff6f61;
+            text-shadow: 1px 1px #ffcdb2;
+        }
+
+        .bar-container {
+            width: 80%;
+            background-color: #ddd;
+            margin: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 30px;
+            border: 2px solid #ffb703;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0;
+            background-color: #ffb703;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.5s ease-in-out;
+            font-weight: bold;
+        }
+
+        .spinner {
+            margin: 30px auto;
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ffe8d6;
+            border-top-color: #ffb703;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px #ffb703, 0 0 10px #fb8500;
+            }
+            50% {
+                box-shadow: 0 0 15px #ffb703, 0 0 25px #fb8500;
+            }
+        }
+
+        .waiting-text {
+            margin-top: 10px;
+            color: #555;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>⏳ Analyzing your book...</h2>
+    <div class="bar-container">
+        <div class="bar" id="progress-bar">0%</div>
+    </div>
+
+    <div class="spinner"></div>
+    <div class="waiting-text">Finalizing analysis...</div>
+
+    <script>
+        const taskId = "{{ task_id }}";
+        let fakeProgress = 0;
+
+        function updateFakeProgress() {
+            const bar = document.getElementById('progress-bar');
+            if (fakeProgress < 99) {
+                fakeProgress += 1;
+                bar.style.width = fakeProgress + '%';
+                bar.textContent = fakeProgress + '%';
+            }
+            setTimeout(updateFakeProgress, 1000);
+        }
+
+        function checkRealProgress() {
+            fetch(`/result/${taskId}`)
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else {
+                        return response.text();
+                    }
+                })
+                .then(text => {
+                    if (!text.includes("Analyzing your book")) {
+                        window.location.href = `/result/${taskId}`;
+                    } else {
+                        setTimeout(checkRealProgress, 2000);
+                    }
+                });
+        }
+
+        updateFakeProgress();
+        checkRealProgress();
+    </script>
+</body>
+</html>
